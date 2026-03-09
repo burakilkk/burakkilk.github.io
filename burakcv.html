@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burak İlk | Core Network Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        html { scroll-behavior: smooth; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .dark .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .dark .card-hover:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+
+        .skill-bar { transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        .pulse-dot { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+
+        .network-bg {
+            background-image: radial-gradient(circle at 1px 1px, rgba(59,130,246,0.07) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        .dark .network-bg {
+            background-image: radial-gradient(circle at 1px 1px, rgba(96,165,250,0.05) 1px, transparent 0);
+        }
+
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -2px; left: 50%; width: 0; height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: all 0.3s ease; transform: translateX(-50%);
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        .cert-badge { transition: all 0.3s ease; }
+        .cert-badge:hover { transform: scale(1.03) rotate(-0.5deg); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-anim { animation: float 3s ease-in-out infinite; }
+
+        .topology-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; opacity: 0.12;
+        }
+        .dark .topology-canvas { opacity: 0.07; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-track { background: #0f172a; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+        .tt-blue { color: #0032a0; }
+        .dark .tt-blue { color: #60a5fa; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-200 transition-colors duration-500 font-inter">
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between h-16">
+                <a href="#hero" class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">Bİ</span>
+                    </div>
+                    <span class="font-bold text-lg dark:text-white">Burak İlk</span>
+                </a>
+                <div class="hidden md:flex items-center gap-7">
+                    <a href="#about" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Hakkımda</a>
+                    <a href="#experience" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Deneyim</a>
+                    <a href="#skills" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Yetenekler</a>
+                    <a href="#certifications" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Sertifikalar</a>
+                    <a href="#projects" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Projeler</a>
+                    <a href="#references" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Referanslar</a>
+                    <a href="#contact" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">İletişim</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="themeToggle" class="relative w-14 h-7 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors duration-300 flex items-center p-1 cursor-pointer" aria-label="Tema Değiştir">
+                        <div id="toggleCircle" class="w-5 h-5 rounded-full bg-white shadow-md transform transition-transform duration-300 flex items-center justify-center">
+                            <svg id="sunIcon" class="w-3 h-3 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/></svg>
+                            <svg id="moonIcon" class="w-3 h-3 text-blue-400 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                        </div>
+                    </button>
+                    <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+            <div class="px-4 py-3 space-y-1">
+                <a href="#about" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Hakkımda</a>
+                <a href="#experience" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Deneyim</a>
+                <a href="#skills" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Yetenekler</a>
+                <a href="#certifications" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Sertifikalar</a>
+                <a href="#projects" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Projeler</a>
+                <a href="#references" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Referanslar</a>
+                <a href="#contact" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">İletişim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center network-bg overflow-hidden">
+        <canvas id="networkCanvas" class="topology-canvas"></canvas>
+        <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-20">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                <div class="relative flex-shrink-0">
+                    <div class="w-52 h-52 sm:w-60 sm:h-60 rounded-full bg-gradient-to-br from-blue-600 via-cyan-500 to-blue-400 p-1 float-anim">
+                        <div class="w-full h-full rounded-full bg-gray-100 dark:bg-gray-900 flex items-center justify-center overflow-hidden">
+                            <div class="text-center">
+                                <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center mb-2">
+                                    <span class="text-3xl font-bold text-white">Bİ</span>
+                                </div>
+                                <span class="text-[10px] text-gray-400 dark:text-gray-500 font-medium tracking-wider uppercase">Core Network Engineer</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-3 right-3 flex items-center gap-2 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-full shadow-lg border border-gray-100 dark:border-gray-700">
+                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full pulse-dot"></span>
+                        <span class="text-[11px] font-semibold text-green-600 dark:text-green-400">Türk Telekom</span>
+                    </div>
+                </div>
+
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 mb-6">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
+                        <span class="text-sm font-medium text-blue-600 dark:text-blue-400">IP/MPLS · NOC · Service Activation</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
+                        <span class="gradient-text">Burak İlk</span>
+                    </h1>
+                    <h2 class="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-600 dark:text-gray-400 mb-5">
+                        Core Network Engineer
+                    </h2>
+                    <p class="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-xl mb-8 leading-relaxed">
+                        Türk Telekom'da 4 yıllık deneyime sahip Network Mühendisi. Kurumsal müşteriler için 
+                        IP/MPLS backbone ağında sorun giderme ve servis aktivasyonu üzerine çalışmaktayım. 
+                        Sürekli kendini geliştiren, öğrenmeye açık bir mühendis.
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                        <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-105">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            İletişime Geç
+                        </a>
+                        <a href="#experience" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 shadow-sm hover:shadow-md transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            CV İndir
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6 mt-10 pt-8 border-t border-gray-200 dark:border-gray-800">
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold gradient-text" id="expCount">0</div>
+                            <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Yıl Deneyim</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold gradient-text" id="projCount">0</div>
+                            <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Proje</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold gradient-text" id="certCount">0</div>
+                            <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Sertifika</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <a href="#about" class="flex flex-col items-center gap-1 text-gray-400">
+                <span class="text-xs font-medium">Aşağı Kaydır</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-20 bg-white dark:bg-gray-900 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="fade-in">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full"></div>
+                    <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Hakkımda</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-12 dark:text-white">Kendimi Tanıtayım</h2>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <div class="fade-in space-y-5">
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-base">
+                        Karabük Üniversitesi Elektrik-Elektronik Mühendisliği mezunuyum. Ocak 2022'den bu yana 
+                        <strong class="text-blue-600 dark:text-blue-400">Türk Telekom</strong>'da Core Network Engineer olarak görev yapmaktayım. 
+                        Network Operation Center (NOC) bünyesinde, kurumsal müşterilere yönelik IP/MPLS backbone ağında 
+                        sorun giderme ve servis aktivasyonu gerçekleştiriyorum.
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-base">
+                        L2VPN ve L3VPN konfigürasyonları, MPLS devre sorun giderme, BGP/OSPF/ISIS routing protokolleri 
+                        ve multi-vendor cihaz yönetimi (Alcatel, Huawei, Nokia) konularında uzmanlaşmış durumdayım. 
+                        Büyük kamu kurumları ve özel sektör müşterilerine hizmet vermekteyim.
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-base">
+                        Aynı zamanda freelance olarak web geliştirme, DNS yönetimi ve SEO alanlarında çalışmaktayım. 
+                        Kendimi sürekli geliştiren, otomasyon araçları geliştirmeyi seven ve yeni teknolojilere açık bir mühendisim.
+                    </p>
+                </div>
+                <div class="fade-in">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="card-hover p-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+                            <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-3">
+                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            </div>
+                            <div class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Konum</div>
+                            <div class="font-semibold text-sm dark:text-white">Türkiye</div>
+                        </div>
+                        <div class="card-hover p-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-100 dark:bg-cyan-900/50 flex items-center justify-center mb-3">
+                                <svg class="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Deneyim</div>
+                            <div class="font-semibold text-sm dark:text-white">4+ Yıl</div>
+                        </div>
+                        <div class="card-hover p-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+                            <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center mb-3">
+                                <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            </div>
+                            <div class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Eğitim</div>
+                            <div class="font-semibold text-sm dark:text-white">Elektrik-Elektronik Müh.</div>
+                        </div>
+                        <div class="card-hover p-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+                            <div class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/50 flex items-center justify-center mb-3">
+                                <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+                            </div>
+                            <div class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Diller</div>
+                            <div class="font-semibold text-sm dark:text-white">TR · EN · ES</div>
+                        </div>
+                    </div>
+
+                    <!-- Languages Detail -->
+                    <div class="mt-5 p-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+                        <h4 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">Dil Yetkinlikleri</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">🇹🇷 Türkçe</span>
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">Ana Dil</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">🇬🇧 İngilizce</span>
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">Profesyonel</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">🇪🇸 İspanyolca</span>
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">Başlangıç</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" class="py-20 bg-gray-50 dark:bg-gray-950 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="fade-in">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full"></div>
+                    <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Deneyim</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-12 dark:text-white">İş Deneyimim</h2>
+            </div>
+            <div class="space-y-6">
+
+                <!-- Turk Telekom -->
+                <div class="fade-in card-hover bg-white dark:bg-gray-900 rounded-2xl p-6 sm:p-8 border border-gray-100 dark:border-gray-800 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
+                            <span class="text-white font-bold text-xs">TT</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                                <h3 class="text-lg font-bold dark:text-white">Core Network Engineer</h3>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 mt-1 sm:mt-0 w-fit">Güncel</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                <span class="font-semibold text-blue-600 dark:text-blue-400">Türk Telekom</span>
+                                <span>•</span>
+                                <span>Ocak 2022 - Günümüz</span>
+                            </div>
+                            <ul class="space-y-2.5 text-sm text-gray-600 dark:text-gray-300">
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    Kurumsal müşteriler için IP/MPLS backbone ağında (TTVPN) L2VPN ve L3VPN konfigürasyon yönetimi
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    MPLS devre sorunlarında uçtan uca troubleshooting ve kök neden analizi
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    Büyük kamu kurumları ve özel sektör müşterilerine MPLS VPN altyapı desteği
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    <strong>Alcatel 7750</strong> serisi service router, <strong>Huawei NE40</strong> router, <strong>Huawei & Omni L2/L3</strong> switch yönetimi
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    Multi-vendor DSLAM konfigürasyonları (Alcatel, ZTE, Huawei) — telnet üzerinden
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    LAN blok, yeni MPLS endpoint, QoS, BGP, VRRP ve MC-LAG konfigürasyonları
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    Visual Basic ile TTVPN devre migrasyon ve konfigürasyon üretim otomasyon araçları geliştirme
+                                </li>
+                            </ul>
+                            <div class="flex flex-wrap gap-1.5 mt-4">
+                                <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300">MPLS</span>
+                                <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300">L2VPN/L3VPN</span>
+                                <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300">BGP</span>
+                                <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300">Nokia 7750</span>
+                                <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300">Huawei NE40</span>
+                                <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300">QoS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Freelance -->
+                <div class="fade-in card-hover bg-white dark:bg-gray-900 rounded-2xl p-6 sm:p-8 border border-gray-100 dark:border-gray-800 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                                <h3 class="text-lg font-bold dark:text-white">Webmaster (Freelance)</h3>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 mt-1 sm:mt-0 w-fit">Güncel</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                <span class="font-semibold text-purple-600 dark:text-purple-400">Freelance</span>
+                                <span>•</span>
+                                <span>Nisan 2020 - Günümüz</span>
+                            </div>
+                            <ul class="space-y-2.5 text-sm text-gray-600 dark:text-gray-300">
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    CMS tabanlı müşteri web siteleri geliştirme
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    DNS yönetimi, domain brokerage ve hosting altyapı konfigürasyonu
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    cPanel, DirectAdmin ve Plesk ile web sunucu yönetimi
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <svg class="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    SEO implementasyonu ve optimizasyonu
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internships -->
+                <div class="grid sm:grid-cols-2 gap-6">
+                    <div class="fade-in card-hover bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-base dark:text-white">Stajyer</h3>
+                                <p class="text-sm text-teal-600 dark:text-teal-400 font-medium">Tuzla Belediyesi</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Ağustos - Eylül 2019</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">İmar müdürlüğünde elektrik projeleri denetimi ve saha kontrolü</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fade-in card-hover bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-base dark:text-white">Stajyer</h3>
+                                <p class="text-sm text-orange-600 dark:text-orange-400 font-medium">MB Holding</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Temmuz - Ağustos 2018</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Elektrik dağıtım projesi, altyapı planlama ve teknik dokümantasyon</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="py-20 bg-white dark:bg-gray-900 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="fade-in">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full"></div>
+                    <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Yetenekler</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-12 dark:text-white">Teknik Yetkinlikler</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Network Core -->
+                <div class="fade-in space-y-5">
+                    <h3 class="text-lg font-bold flex items-center gap-2 dark:text-white">
+                        <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
+                        Core Network
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">MPLS / MPLS VPN</span>
+                                <span class="text-sm font-bold text-blue-600 dark:text-blue-400">95%</span>
+                            </div>
+                            <div class="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" data-width="95" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">L2VPN / L3VPN Konfigürasyon</span>
+                                <span class="text-sm font-bold text-blue-600 dark:text-blue-400">92%</span>
+                            </div>
+                            <div class="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" data-width="92" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">BGP / OSPF / ISIS</span>
+                                <span class="text-sm font-bold text-blue-600 dark:text-blue-400">88%</span>
+                            </div>
+                            <div class="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" data-width="88" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">QoS / VRRP / MC-LAG</span>
+                                <span class="text-sm font-bold text-blue-600 dark:text-blue-400">85%</span>
+                            </div>
+                            <div class="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full" data-width="85" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Troubleshooting & RCA</span>
+                                <span class="text-sm font-bold text-blue-600 dark:text-blue-400">93%</span>
+                            </div>
+                            <div class="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full" data-width="93" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vendor & Tools -->
+                <div class="fade-in space-y-5">
+                    <h3 class="text-lg font-bold flex items-center gap-2 dark:text-white">
+                        <svg class="w-5 h-5 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+                        Vendor & Araçlar
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Alcatel/Nokia 7750 SR</span>
+                                <span class="text-sm font-bold text-cyan-600 dark:text-cyan-400">90%</span>
+                            </div>
+                            <div class="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-sky-500 to-blue-600 rounded-full" data-width="90" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Huawei NE40 / L2-L3 Switch</span>
+                                <span class="text-sm font-bold text-cyan-600 dark:text-cyan-400">88%</span>
+                            </div>
+                            <div class="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-red-500 to-orange-500 rounded-full" data-width="88" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">DNS / Domain / Hosting</span>
+                                <span class="text-sm font-bold text-cyan-600 dark:text-cyan-400">85%</span>
+                            </div>
+                            <div class="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" data-width="85" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Web Development / CMS</span>
+                                <span class="text-sm font-bold text-cyan-600 dark:text-cyan-400">80%</span>
+                            </div>
+                            <div class="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" data-width="80" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Visual Basic / Otomasyon</span>
+                                <span class="text-sm font-bold text-cyan-600 dark:text-cyan-400">75%</span>
+                            </div>
+                            <div class="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" data-width="75" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="fade-in mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
+                <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Tüm Teknolojiler & Kavramlar</h3>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800">MPLS</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800">MPLS VPN</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300 border border-cyan-100 dark:border-cyan-800">L2VPN</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300 border border-cyan-100 dark:border-cyan-800">L3VPN</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 border border-purple-100 dark:border-purple-800">BGP</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">OSPF</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-violet-50 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300 border border-violet-100 dark:border-violet-800">ISIS</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 border border-amber-100 dark:border-amber-800">QoS</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-100 dark:border-green-800">VRRP</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300 border border-teal-100 dark:border-teal-800">MC-LAG</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-300 border border-sky-100 dark:border-sky-800">Nokia 7750 SR</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-100 dark:border-red-800">Huawei NE40</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-100 dark:border-orange-800">DSLAM</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-pink-50 dark:bg-pink-900/20 text-pink-700 dark:text-pink-300 border border-pink-100 dark:border-pink-800">Alcatel</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-300 border border-rose-100 dark:border-rose-800">ZTE</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-fuchsia-50 dark:bg-fuchsia-900/20 text-fuchsia-700 dark:text-fuchsia-300 border border-fuchsia-100 dark:border-fuchsia-800">Visual Basic</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-lime-50 dark:bg-lime-900/20 text-lime-700 dark:text-lime-300 border border-lime-100 dark:border-lime-800">DNS</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800">SEO</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700">cPanel</span>
+                    <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700">Plesk</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications -->
+    <section id="certifications" class="py-20 bg-gray-50 dark:bg-gray-950 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="fade-in">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full"></div>
+                    <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Sertifikalar</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-12 dark:text-white">Sertifikalar & Eğitimler</h2>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+                <!-- Huawei Cert -->
+                <div class="fade-in cert-badge bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-red-500/10 to-transparent rounded-bl-full"></div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 rounded-xl bg-red-50 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-7 h-7 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm dark:text-white leading-tight">Huawei IP/MPLS NE-40 Service Admin</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Türk Telekom</p>
+                            <p class="text-xs text-red-600 dark:text-red-400 font-medium mt-2">Temmuz 2022</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5 leading-relaxed">Huawei BackBone Router'larda müşteri devrelerini yönetme ve operasyon yetkisi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nokia Cert -->
+                <div class="fade-in cert-badge bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-blue-500/10 to-transparent rounded-bl-full"></div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-7 h-7 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm dark:text-white leading-tight">Nokia Service Router Admin</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Türk Telekom</p>
+                            <p class="text-xs text-blue-600 dark:text-blue-400 font-medium mt-2">Temmuz 2022</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5 leading-relaxed">Nokia BackBone Router'larda müşteri devrelerini yönetme ve operasyon yetkisi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soft Skills -->
+                <div class="fade-in cert-badge bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-purple-500/10 to-transparent rounded-bl-full"></div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 rounded-xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-7 h-7 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm dark:text-white leading-tight">Kişisel Gelişim Eğitimleri</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Türk Telekom</p>
+                            <p class="text-xs text-purple-600 dark:text-purple-400 font-medium mt-2">Mart 2022</p>
+                            <div class="flex flex-wrap gap-1 mt-2">
+                                <span class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">Liderlik</span>
+                                <span class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">Ekip İletişimi</span>
+                                <span class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">İkna</span>
+                                <span class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">Dijital İnovasyon</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education -->
+    <section class="py-20 bg-white dark:bg-gray-900 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="fade-in">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full"></div>
+                    <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Eğitim</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-12 dark:text-white">Eğitim Bilgilerim</h2>
+            </div>
+            <div class="fade-in card-hover bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-6 sm:p-8 border border-gray-100 dark:border-gray-800 max-w-2xl">
+                <div class="flex items-start gap-5">
+                    <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg dark:text-white">Elektrik-Elektronik Mühendisliği</h3>
+                        <p class="text-sm text-blue-600 dark:text-blue-400 font-semibold mt-1">Karabük Üniversitesi</p>
+                        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mt-2">
+                            <span>2016 - 2021</span>
+                            <span>•</span>
+                            <span>Lisans</span>
+                            <span>•</span>
+                            <span class="font-semibold">GPA: 2.89 / 4.00</span>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Öne Çıkan Projeler</h4>
+                            <ul class="space-y-1.5 text-sm text-gray-600 dark:text-gray-300">
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                    132KW Güneş Enerjisi Santrali Tasarımı
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                    Simulink ile Sinyal İşleme Uygulaması
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="py-20 bg-gray-50 dark:bg-gray-950 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="fade-in">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full"></div>
+                    <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Projeler</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-12 dark:text-white">Öne Çıkan Projeler</h2>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Project 1 -->
+                <div class="fade-in card-hover bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-cyan-500"></div>
+                    <div class="p-6">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                        </div>
+                        <h3 class="text-base font-bold mb-2 dark:text-white">TTVPN Circuit Migration Automation</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                            MPLS cihazları arasında TTVPN devre migrasyon sürecini otomatikleştiren Visual Basic tabanlı çözüm. Manuel iş yükünü ve hata oranını önemli ölçüde azalttı.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">Visual Basic</span>
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300">MPLS</span>
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">Automation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="fade-in card-hover bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
+                    <div class="h-2 bg-gradient-to-r from-green-500 to-emerald-500"></div>
+                    <div class="p-6">
+                        <div class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/50 flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+                        </div>
+                        <h3 class="text-base font-bold mb-2 dark:text-white">Network Configuration Generator</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                            Ağ cihazları için otomatik konfigürasyon üreten web arayüzü. Günlük operasyonlarda verimliliği artırdı ve konfigürasyon hatalarını azalttı.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">Web Dev</span>
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">Automation</span>
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300">Network</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="fade-in card-hover bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
+                    <div class="h-2 bg-gradient-to-r from-amber-500 to-orange-500"></div>
+                    <div class="p-6">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                        <h3 class="text-base font-bold mb-2 dark:text-white">Cacti vs MRTG Karşılaştırma Araştırması</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                            İlk 6 aylık deneme süresinde hazırlanan araştırma projesi. Zabbix, Nagios, Checkmk gibi monitoring araçlarının büyük ölçekli ağlara entegrasyonu analizi.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300">Monitoring</span>
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">Analysis</span>
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">Enterprise</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="fade-in card-hover bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
+                    <div class="h-2 bg-gradient-to-r from-violet-500 to-purple-500"></div>
+                    <div class="p-6">
+                        <div class="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <h3 class="text-base font-bold mb-2 dark:text-white">Simulink Sinyal İşleme</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                            Analog sinyallerde AM/FM modülasyon-demodülasyon, dijital sinyallerde BPSK, QPSK ve 16QAM simülasyonu. Simulink ortamında gerçekleştirildi.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300">Simulink</span>
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">Signal Processing</span>
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-fuchsia-100 dark:bg-fuchsia-900/30 text-fuchsia-700 dark:text-fuchsia-300">Modulation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="fade-in card-hover bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
+                    <div class="h-2 bg-gradient-to-r from-yellow-400 to-orange-400"></div>
+                    <div class="p-6">
+                        <div class="w-10 h-10 rounded-xl bg-yellow-100 dark:bg-yellow-900/50 flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        </div>
+                        <h3 class="text-base font-bold mb-2 dark:text-white">132KW Güneş Enerjisi Santrali</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                            Sürdürülebilir enerji uygulamasına odaklanan kapsamlı güneş enerjisi santrali sistem tasarımı. Lisans bitirme projesi olarak geliştirildi.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">Renewable Energy</span>
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">Power Systems</span>
+                            <span class="px-2 py-1 text-[11px] font-medium rounded-md bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">Sustainability</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- References -->
+    <section id="references" class="py-20 bg-white dark:bg-gray-900 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="fade-in">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full"></div>
+                    <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Referanslar</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-12 dark:text-white">Profesyonel Referanslarım</h2>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="fade-in card-hover bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-5 border border-gray-100 dark:border-gray-800">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-xs">MK</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm dark:text-white">Mücahit Kapdan</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Network Security Engineer</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-blue-600 dark:text-blue-400 font-medium">Albaraka Türk</p>
+                </div>
+                <div class="fade-in card-hover bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-5 border border-gray-100 dark:border-gray-800">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-xs">FT</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm dark:text-white">Furkan Türkmen</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Aerodynamics, CFD & Thermal Eng.</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-red-600 dark:text-red-400 font-medium">Baykar Technologies</p>
+                </div>
+                <div class="fade-in card-hover bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-5 border border-gray-100 dark:border-gray-800">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-xs">EY</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm dark:text-white">Erkan Yıldız</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Special Services Manager</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-cyan-600 dark:text-cyan-400 font-medium">Türk Telekom</p>
+                </div>
+                <div class="fade-in card-hover bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-5 border border-gray-100 dark:border-gray-800">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-xs">YC</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm dark:text-white">Yusuf Cansız</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Dev-Ops Engineer</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-green-600 dark:text-green-400 font-medium">Huawei</p>
+                </div>
+                <div class="fade-in card-hover bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-5 border border-gray-100 dark:border-gray-800">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-xs">YÜ</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm dark:text-white">Yusuf Ziya Ünel</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Network Engineer</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-purple-600 dark:text-purple-400 font-medium">Nokia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-950 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="fade-in">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full"></div>
+                    <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">İletişim</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4 dark:text-white">Benimle İletişime Geçin</h2>
+                <p class="text-gray-500 dark:text-gray-400 mb-12 max-w-lg">İş fırsatları, işbirliği veya sorularınız için benimle iletişime geçebilirsiniz.</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-10">
+                <div class="space-y-5">
+                    <div class="fade-in card-hover flex items-center gap-4 p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-xs font-medium text-gray-500 dark:text-gray-400">E-posta</div>
+                            <div class="font-semibold text-sm dark:text-white">burak.ilk@email.com</div>
+                        </div>
+                    </div>
+                    <div class="fade-in card-hover flex items-center gap-4 p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-100 dark:bg-cyan-900/50 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-xs font-medium text-gray-500 dark:text-gray-400">Mevcut Pozisyon</div>
+                            <div class="font-semibold text-sm dark:text-white">Core Network Engineer @ Türk Telekom</div>
+                        </div>
+                    </div>
+                    <div class="fade-in card-hover flex items-center gap-4 p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-xs font-medium text-gray-500 dark:text-gray-400">Konum</div>
+                            <div class="font-semibold text-sm dark:text-white">Türkiye</div>
+                        </div>
+                    </div>
+                    <div class="fade-in flex items-center gap-3 pt-4">
+                        <a href="#" class="w-11 h-11 rounded-xl bg-white dark:bg-gray-800 flex items-center justify-center hover:bg-blue-50 dark:hover:bg-blue-900/30 text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 border border-gray-200 dark:border-gray-700 shadow-sm">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </a>
+                        <a href="#" class="w-11 h-11 rounded-xl bg-white dark:bg-gray-800 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-800 dark:hover:text-white transition-all duration-300 border border-gray-200 dark:border-gray-700 shadow-sm">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="fade-in">
+                    <form class="space-y-4" onsubmit="handleSubmit(event)">
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Ad Soyad</label>
+                                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm" placeholder="Adınız Soyadınız">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">E-posta</label>
+                                <input type="email" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm" placeholder="email@adres.com">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Konu</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm" placeholder="Mesajınızın konusu">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Mesaj</label>
+                            <textarea rows="4" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm resize-none" placeholder="Mesajınızı buraya yazın..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-[1.02]">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                            Mesaj Gönder
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-gray-400 py-10 border-t border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center">
+                        <span class="text-white font-bold text-[10px]">Bİ</span>
+                    </div>
+                    <span class="font-semibold text-white">Burak İlk</span>
+                    <span class="text-gray-600">|</span>
+                    <span class="text-sm text-gray-500">Core Network Engineer</span>
+                </div>
+                <p class="text-sm text-gray-500">© 2024 Burak İlk. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="fixed bottom-6 right-6 w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-full shadow-lg shadow-blue-500/25 flex items-center justify-center transform transition-all duration-300 opacity-0 translate-y-4 hover:scale-110 z-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+    </button>
+
+    <script>
+        // Dark Mode
+        const themeToggle = document.getElementById('themeToggle');
+        const toggleCircle = document.getElementById('toggleCircle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const html = document.documentElement;
+
+        function setDarkMode(isDark) {
+            if (isDark) {
+                html.classList.add('dark');
+                toggleCircle.style.transform = 'translateX(28px)';
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                toggleCircle.style.transform = 'translateX(0)';
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setDarkMode(true);
+        }
+        themeToggle.addEventListener('click', () => setDarkMode(!html.classList.contains('dark')));
+
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+        // Scroll Animations
+        const fadeEls = document.querySelectorAll('.fade-in');
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        fadeEls.forEach(el => obs.observe(el));
+
+        // Skill Bars
+        const skillBars = document.querySelectorAll('.skill-bar');
+        const skillObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.style.width = e.target.dataset.width + '%'; });
+        }, { threshold: 0.3 });
+        skillBars.forEach(b => skillObs.observe(b));
+
+        // Counters
+        function animateCounter(el, target, dur = 1500) {
+            let s = 0; const inc = target / (dur / 16);
+            (function update() {
+                s += inc;
+                if (s < target) { el.textContent = Math.floor(s) + '+'; requestAnimationFrame(update); }
+                else el.textContent = target + '+';
+            })();
+        }
+        const cObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    animateCounter(document.getElementById('expCount'), 4);
+                    animateCounter(document.getElementById('projCount'), 5);
+                    animateCounter(document.getElementById('certCount'), 3);
+                    cObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        cObs.observe(document.getElementById('expCount'));
+
+        // Back to Top
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) { backToTop.classList.remove('opacity-0','translate-y-4'); backToTop.classList.add('opacity-100','translate-y-0'); }
+            else { backToTop.classList.add('opacity-0','translate-y-4'); backToTop.classList.remove('opacity-100','translate-y-0'); }
+        });
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // Canvas
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resizeCanvas() { canvas.width = canvas.parentElement.offsetWidth; canvas.height = canvas.parentElement.offsetHeight; }
+        function createParticles() {
+            particles = [];
+            const n = Math.floor((canvas.width * canvas.height) / 18000);
+            for (let i = 0; i < n; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, size: Math.random()*2+1 });
+        }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const c = html.classList.contains('dark') ? '96,165,250' : '37,99,235';
+            particles.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                ctx.fillStyle = `rgba(${c},0.5)`; ctx.fill();
+                for (let j = i+1; j < particles.length; j++) {
+                    const dx = particles[j].x - p.x, dy = particles[j].y - p.y, d = Math.sqrt(dx*dx+dy*dy);
+                    if (d < 110) { ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(particles[j].x,particles[j].y);
+                        ctx.strokeStyle = `rgba(${c},${0.18*(1-d/110)})`; ctx.lineWidth = 0.5; ctx.stroke(); }
+                }
+            });
+            requestAnimationFrame(draw);
+        }
+        resizeCanvas(); createParticles(); draw();
+        window.addEventListener('resize', () => { resizeCanvas(); createParticles(); });
+
+        // Form
+        function handleSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Gönderiliyor...';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Gönderildi!';
+                btn.classList.remove('from-blue-600','to-cyan-500'); btn.classList.add('from-green-500','to-emerald-500');
+                setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; btn.classList.remove('from-green-500','to-emerald-500'); btn.classList.add('from-blue-600','to-cyan-500'); e.target.reset(); }, 2000);
+            }, 1500);
+        }
+
+        // Navbar shadow
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('shadow-sm', window.scrollY > 10);
+        });
+    </script>
+</body>
+</html>
